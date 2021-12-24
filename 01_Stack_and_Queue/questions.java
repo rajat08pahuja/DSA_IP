@@ -55,12 +55,74 @@ public class questions {
                 // do nothing
             }
         }
-        
+
         if (st.size() > 0) {
             return false;
         }
 
         return true;
+    }
+
+    // Next Greater Element to the Right
+    public static int[] nge(int[] arr) {
+        Stack<Integer> st = new Stack<>();
+        int[] ans = new int[arr.length];
+
+        for (int i = 0; i < arr.length; i++) {
+            while (st.size() > 0 && arr[st.peek()] < arr[i]) {
+                ans[st.pop()] = arr[i];
+            }
+            st.push(i);
+        }
+
+        while (st.size() > 0) {
+            ans[st.pop()] = -1;
+        }
+
+        return ans;
+    }
+
+    public static int[] nge1(int[] arr) {
+        Stack<Integer> st = new Stack<>();
+        int[] ans = new int[arr.length];
+
+        for (int i = arr.length - 1; i >= 0; i--) {
+            while (st.size() > 0 && arr[i] >= arr[st.peek()]) {
+                st.pop();
+            }
+            if (st.size() == 0) {
+                ans[i] = -1;
+            } else {
+                ans[i] = st.peek();
+            }
+
+            st.push(i);
+        }
+
+        return ans;
+    }
+
+    // Stock Span
+    public static int[] stockSpan(int[] arr){
+        int n = arr.length;
+        Stack<Integer> st = new Stack<>();
+        int[] ans = new int[n];
+
+        for(int i = n - 1 ; i >= 0 ; i--){
+            while(st.size() > 0 && arr[st.peek()] < arr[i]){
+                ans[st.pop()] = i;
+            }
+            st.push(i);
+        }
+
+        while(st.size() > 0){
+            ans[st.pop()] = -1;
+        }
+
+        for(int i = 0 ; i < n ; i++){
+            ans[i] = i - ans[i];
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
