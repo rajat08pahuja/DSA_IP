@@ -103,26 +103,69 @@ public class questions {
     }
 
     // Stock Span
-    public static int[] stockSpan(int[] arr){
+    public static int[] stockSpan(int[] arr) {
         int n = arr.length;
         Stack<Integer> st = new Stack<>();
         int[] ans = new int[n];
 
-        for(int i = n - 1 ; i >= 0 ; i--){
-            while(st.size() > 0 && arr[st.peek()] < arr[i]){
+        for (int i = n - 1; i >= 0; i--) {
+            while (st.size() > 0 && arr[st.peek()] < arr[i]) {
                 ans[st.pop()] = i;
             }
             st.push(i);
         }
 
-        while(st.size() > 0){
+        while (st.size() > 0) {
             ans[st.pop()] = -1;
         }
 
-        for(int i = 0 ; i < n ; i++){
+        for (int i = 0; i < n; i++) {
             ans[i] = i - ans[i];
         }
         return ans;
+    }
+
+    // Largest Area Histogram
+    public static int largestAreaHistogram(int[] arr) {
+        int n = arr.length;
+        Stack<Integer> st = new Stack<>();
+        int[] nsl = new int[n];
+        int[] nsr = new int[n];
+
+        for (int i = 0; i < arr.length; i++) {
+            while (st.size() > 0 && arr[st.peek()] > arr[i]) {
+                nsr[st.pop()] = i;
+            }
+            st.push(i);
+        }
+
+        while (st.size() > 0) {
+            nsr[st.pop()] = n;
+        }
+
+        st = new Stack<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (st.size() > 0 && arr[st.peek()] > arr[i]) {
+                nsl[st.pop()] = i;
+            }
+            st.push(i);
+        }
+
+        while (st.size() > 0) {
+            nsl[st.pop()] = -1;
+        }
+
+        int maxArea = 0;
+
+        for (int i = 0; i < n; i++) {
+            int ht = arr[i];
+            int width = nsr[i] - nsl[i] - 1;
+
+            maxArea = Math.max(maxArea, ht * width);
+        }
+
+        return maxArea;
     }
 
     public static void main(String[] args) {
